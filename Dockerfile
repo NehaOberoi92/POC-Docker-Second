@@ -18,7 +18,7 @@ WORKDIR "/src/QuickStart.Tests"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnetglobaltools
 LABEL unittestlayer=true
 RUN dotnet test --logger "trx;LogFileName=QuickStart.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=/out/testresults/coverage/ /p:Exclude="[xunit.*]*" --results-directory /out/testresults
-RUN /dotnetglobaltools/reportgenerator "-reports:/out/testresults/coverage/coverage.cobertura.xml" "-targetdir:/out/testresults/coverage/reports" "-reporttypes:HTMLInline;HTMLChart"
+
 
 FROM build AS publish
 RUN dotnet publish "QuickStart.csproj" -c Release -o /app/publish
