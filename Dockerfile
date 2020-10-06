@@ -17,7 +17,7 @@ FROM build AS test
 WORKDIR "/src/QuickStart.Tests"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnetglobaltools
 LABEL unittestlayer=true
-RUN dotnet test --logger "trx;LogFileName=QuickStart.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=/out/testresults/coverage/ --results-directory /out/testresults
+RUN dotnet test --logger "trx;LogFileName=neha.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=/out/testresults/coverage/ --results-directory /out/testresults
 
 
 FROM build AS publish
