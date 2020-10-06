@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY *.sln .
 COPY ["QuickStart/QuickStart.csproj", "QuickStart/"]
-COPY ["QuickStart.Tests/*.csproj", "QuickStart.Tests/"]
+COPY ["QuickStart.Tests/QuickStart.Tests.csproj", "QuickStart.Tests/"]
 RUN dotnet restore 
 COPY . .
 WORKDIR "/src/QuickStart"
@@ -16,7 +16,7 @@ RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 FROM build AS test
 WORKDIR "/src/QuickStart.Tests"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnetglobaltools
-LABEL unittestlayer=true
+LABEL newunittestlayer=true
 RUN dotnet test "QuickStart.Tests.csproj" --logger "trx;LogFileName=testresults.trx" 
 
 
