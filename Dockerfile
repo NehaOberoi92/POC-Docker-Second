@@ -16,9 +16,8 @@ RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 FROM build AS test
 LABEL test=true
 WORKDIR /src
-RUN dotnet restore QuickStart.sln
+RUN dotnet build QuickStart.sln
 WORKDIR "/src/QuickStart.Tests"
-RUN dotnet build "QuickStart.Tests.csproj"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
 RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
 RUN ls -la .
