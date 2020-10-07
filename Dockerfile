@@ -16,8 +16,7 @@ RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 FROM build AS test
 LABEL test=true
 WORKDIR "/src/QuickStart.Tests"
-RUN dotnet add package xunit.analyzers --version 0.10.0-build1208 --source https://www.myget.org/F/xunit/api/v3/index.json
-RUN dotnet restore "QuickStart.Tests.csproj"
+RUN msbuild -t:restore "QuickStart.Tests.csproj"
 RUN dotnet build "QuickStart.Tests.csproj"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
 RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
