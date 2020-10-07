@@ -15,6 +15,8 @@ RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 
 FROM build AS test
 LABEL test=true
+WORKDIR /src
+RUN dotnet restore QuickStart.sln
 WORKDIR "/src/QuickStart.Tests"
 RUN dotnet build "QuickStart.Tests.csproj"
 RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
