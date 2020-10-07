@@ -8,7 +8,7 @@ WORKDIR /src
 COPY *.sln .
 COPY ["QuickStart/QuickStart.csproj", "QuickStart/"]
 COPY ["QuickStart.Tests/QuickStart.Tests.csproj", "QuickStart.Tests/"]
-RUN dotnet restore 
+RUN dotnet restore QuickStart.sln
 COPY . .
 WORKDIR "/src/QuickStart"
 RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
