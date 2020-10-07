@@ -14,12 +14,11 @@ WORKDIR "/src/QuickStart"
 RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 
 FROM build AS test
+LABEL test=true
 WORKDIR "/src/QuickStart.Tests"
-RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnetglobaltools
-LABEL newunittestlayer=true
-RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults  --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
-RUN ls -la 
-RUN ls -la /src/QuickStart.Tests/
+RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
+RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
+RUN ls -la .
 
 FROM build AS publish
 RUN dotnet publish "QuickStart.csproj" -c Release -o /app/publish
