@@ -7,15 +7,21 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY *.sln .
 COPY ["QuickStart/QuickStart.csproj", "QuickStart/"]
-COPY ["QuickStart.Tests/*.csproj", "QuickStart.Tests/"]
+COPY ["QuickStart.Tests/QuickStart.Tests.csproj", "QuickStart.Tests/"]
 RUN dotnet restore 
 COPY . .
 WORKDIR "/src/QuickStart"
 RUN dotnet build "QuickStart.csproj" -c Release -o /app/build
 
 FROM build AS test
+LABEL test=true
 WORKDIR "/src/QuickStart.Tests"
-RUN dotnet test --logger "trx;LogFileName=QuickStart.trx" 
+RUN dotnet restore "QuickStart.Tests.csproj"
+RUN dotnet build "QuickStart.Tests.csproj"
+RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
+RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
+RUN ls -la .
+RUN ls -la
 
 FROM build AS publish
 RUN dotnet publish "QuickStart.csproj" -c Release -o /app/publish
