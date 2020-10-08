@@ -18,7 +18,7 @@ LABEL test=true
 WORKDIR "/src/QuickStart.Tests"
 RUN dotnet restore "QuickStart.Tests.csproj"
 RUN dotnet build "QuickStart.Tests.csproj"
-RUN dotnet tool install dotnet-reportgenerator-globaltool --version 4.0.6 --tool-path /tools
+RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnetglobaltools
 RUN dotnet test "QuickStart.Tests.csproj" --results-directory ./testresults --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./testresults/coverage/
 RUN /dotnetglobaltools/reportgenerator "-reports:/testresults/coverage/coverage.cobertura.xml" "-targetdir:/testresults/coverage/reports" "-reporttypes:HTMLInline;HTMLChart"
 RUN ls -la .
