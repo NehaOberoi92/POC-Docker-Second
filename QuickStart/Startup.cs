@@ -29,6 +29,7 @@ namespace QuickStart
         {
             services.AddControllers();
             services.AddHealthChecks();
+            services.AddSwaggerGen();
         }
 
 
@@ -41,10 +42,15 @@ namespace QuickStart
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
 
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
             app.UseEndpoints(endpoints =>
         {
             endpoints.MapHealthChecks("/health");
